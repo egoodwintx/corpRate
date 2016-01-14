@@ -1,0 +1,10 @@
+Package: corpRate
+Type: Package
+Title: A collection of R tools useful for corporate finance
+Version: 0.1
+Date: 2016-01-14
+Author: Ed Goodwin
+Maintainer: Ed Goodwin <ed.registration@gmail.com>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+LazyData: TRUE
