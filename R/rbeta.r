@@ -5,18 +5,18 @@ require(quantmod)
 library(pbkrtest)
 require(car)
 
-startdate = "2014-01-01"
+startdate = "2003-01-01"
 enddate = "2015-01-12"
 
 #Here we get the symbols for the SP500 (GSPC), FI, and 5yr Treasuries (GS5)
 getSymbols("^GSPC", src = "yahoo", from = as.Date(startdate), to = as.Date(enddate))
-getSymbols("FI", src = "yahoo", from = as.Date(startdate), to = as.Date(enddate))
+getSymbols("XOM", src = "yahoo", from = as.Date(startdate), to = as.Date(enddate))
 getSymbols("GS5", src = "FRED", from = as.Date(startdate), to = as.Date(enddate))
 
 #Market risk R_m is the arithmetic mean of SP500 from 2009 through 2011
 #Riskfree rate is arithmetic mean of 5yr treasuries
-marketRisk<- mean(yearlyReturn(GSPC['2014::2015']))
-riskFree <- mean(GS5['2014::2015'])
+marketRisk<- mean(yearlyReturn(GSPC['2003::2015']))
+riskFree <- mean(GS5['2003::2015'])
 
 #My professor advised us to use weekly returns taken on wednesday
 #so I take a subset of wednesdays and use the quantmod function
@@ -41,10 +41,10 @@ FI.WACC = (0.3)*(0.05) + (0.7)*FI.expectedReturn
 
 #Lastly, we graph the returns and fit line, along with info
 plot(100*as.vector(GSPC.weekly),
-            100*as.vector(FI.weekly), 
-            smooth=FALSE, 
+            100*as.vector(FI.weekly),
+            smooth=FALSE,
             main='FI vs. S&P 500 2014-2015',
-            xlab='S&P500 Returns', 
+            xlab='S&P500 Returns',
             ylab='FI Returns',boxplots=FALSE)
 abline(FI.reg)
 
@@ -59,3 +59,12 @@ text(1,-7,paste('y = ',
                 '\nWACC = ', FI.WACC,
                  sep=''),font=2)
 
+
+## other beta code
+start_date <- "2012-01-01"
+acad <- getSymbols("^OSX", from = start_date, auto.assign = F)
+spy <- getSymbols("SPY", from = start_date, auto.assign = F)
+
+r<-function(x) {m<-to.monthly(x[,6])[,4];diff(m)/lag(m)}
+
+coef(lm(r(acad)[2:37]~r(spy)[2:37]))
